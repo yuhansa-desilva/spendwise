@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function App() {
-  const [status, setStatus] = useState("Checking backend...");
-
-  useEffect(() => {
-    fetch(`${API_URL}/`)
-      .then((res) => res.json())
-      .then((data) => setStatus(data.message))
-      .catch(() => setStatus("Could not reach the backend"));
-  }, []);
-
   return (
-    <div className="app">
-      <h1>SpendWise</h1>
-      <p>Backend says: {status}</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </Routes>
   );
 }
 
