@@ -134,3 +134,35 @@ select {
   font-weight: 600;
   text-align: right;
 }
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  align-self: end;
+}
+
+.form-buttons button {
+  flex: 1;
+}
+
+.form-buttons .secondary {
+  margin-top: 0;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.small {
+  padding: 6px 10px;
+  font-size: 14px;
+  background: #e4e7eb;
+  color: #1f2933;
+}
+
+.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
