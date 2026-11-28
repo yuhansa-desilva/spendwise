@@ -30,6 +30,9 @@ router.post("/", async (req, res) => {
     res.status(201).json(expense);
   } catch (err) {
     console.error(err);
+        if (err.name === "ValidationError") {
+      return res.status(400).json({ message: err.message });
+    }
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -74,6 +77,9 @@ router.put("/:id", async (req, res) => {
     res.json(expense);
   } catch (err) {
     console.error(err);
+        if (err.name === "ValidationError") {
+      return res.status(400).json({ message: err.message });
+    }
     res.status(500).json({ message: "Server error" });
   }
 });
