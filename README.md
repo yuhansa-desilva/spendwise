@@ -2,6 +2,8 @@
 
 A full-stack expense tracker with ML-powered insights. **Work in progress.**
 
+![SpendWise dashboard](docs/dashboard.png)
+
 Users log their expenses and see where their money goes. A separate Python service will add automatic categorization, spending forecasts and anomaly detection.
 
 ## Status
@@ -9,7 +11,7 @@ Users log their expenses and see where their money goes. A separate Python servi
 - [x] User registration and login (JWT authentication, bcrypt-hashed passwords)
 - [x] Expense API: add, list, update and delete (each user only sees their own)
 - [x] Summary API: spending per category and per month, for dashboard charts
-- [ ] React frontend (login, expense list, dashboard charts)
+- [x] React frontend: login and register, protected dashboard, add/edit/delete expenses, category and monthly charts
 - [ ] ML service (Python, FastAPI): auto-categorization from transaction text
 - [ ] ML service: monthly spending forecast per category
 - [ ] ML service: anomaly detection
@@ -20,21 +22,25 @@ Users log their expenses and see where their money goes. A separate Python servi
 
 | Part | Technology |
 |---|---|
+| Frontend | React (Vite), React Router, Recharts |
 | Backend API | Node.js, Express |
 | Database | MongoDB Atlas, Mongoose |
 | Auth | JSON Web Tokens, bcryptjs |
-| Frontend (planned) | React (Vite) |
 | ML service (planned) | Python, FastAPI |
 
 ## Project structure
 
 ```
 spendwise/
-├── client/       React frontend (planned)
+├── client/       React frontend
+│   └── src/
+│       ├── pages/        Login, Register, Dashboard
+│       └── components/   Charts, ProtectedRoute
 ├── server/       Express REST API
 │   ├── middleware/   JWT auth check
 │   ├── models/       User and Expense schemas
 │   └── routes/       auth and expenses endpoints
+├── docs/         Screenshots
 └── ml-service/   Python ML service (planned)
 ```
 
@@ -69,13 +75,19 @@ Example summary response:
 }
 ```
 
-## Running the backend locally
+## Running locally
 
 You need Node.js and a free MongoDB Atlas cluster.
 
 ```bash
 git clone https://github.com/yuhansa-desilva/spendwise.git
-cd spendwise/server
+cd spendwise
+```
+
+### 1. Backend
+
+```bash
+cd server
 npm install
 ```
 
@@ -87,10 +99,33 @@ MONGODB_URI=your_mongodb_connection_string_here
 JWT_SECRET=your_jwt_secret_here
 ```
 
-Then start the server:
+Start it:
 
 ```bash
 node index.js
 ```
 
 The API runs at `http://localhost:5000`.
+
+### 2. Frontend
+
+In a second terminal:
+
+```bash
+cd client
+npm install
+```
+
+Create a file named `.env` in the `client` folder (see `.env.example`):
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+Start it:
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:5173`, register an account, and start adding expenses.
