@@ -1,0 +1,9 @@
+{
+  "trained_on_rows": 2400,
+  "cv_accuracy_synthetic": 0.9992,
+  "hand_test_rows": 48,
+  "hand_test_accuracy": 0.9375,
+  "hand_test_macro_f1": 0.9363,
+  "scikit_learn_version": "1.9.1",
+  "trained_on_date": "2026-11-28"
+}
