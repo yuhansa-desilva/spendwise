@@ -14,3 +14,49 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+  text-align: left;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #cbd2d9;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 14px;
+}
