@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     res.status(201).json(expense);
   } catch (err) {
     console.error(err);
-        if (err.name === "ValidationError") {
+    if (err.name === "ValidationError") {
       return res.status(400).json({ message: err.message });
     }
     res.status(500).json({ message: "Server error" });
@@ -44,6 +44,74 @@ router.get("/", async (req, res) => {
       date: -1,
     });
     res.json(expenses);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET /api/expenses/summary?month=2026-11  -> totals for the dashboard
+router.get("/summary", async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.userId);
+
+    // Month in the form YYYY-MM. If missing, use the current month (UTC).
+    const now = new Date();
+    const currentMonth = `${now.getUTCFullYear()}-${String(
+      now.getUTCMonth() + 1
+    ).padStart(2, "0")}`;
+    const monthParam = req.query.month || currentMonth;
+
+    if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(monthParam)) {
+      return res
+        .status(400)
+        .json({ message: "Month must look like 2026-11" });
+    }
+
+    const [year, month] = monthParam.split("-").map(Number);
+    const start = new Date(Date.UTC(year, month - 1, 1));
+    const end = new Date(Date.UTC(year, month, 1));
+
+    // Spending per category inside the chosen month
+    const byCategory = await Expense.aggregate([
+      { $match: { user: userId, date: { $gte: start, $lt: end } } },
+      {
+        $group: {
+          _id: "$category",
+          total: { $sum: "$amount" },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { total: -1 } },
+    ]);
+
+    // Total per month across all time
+    const byMonth = await Expense.aggregate([
+      { $match: { user: userId } },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m", date: "$date" } },
+          total: { $sum: "$amount" },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    res.json({
+      month: monthParam,
+      monthTotal: byCategory.reduce((sum, c) => sum + c.total, 0),
+      byCategory: byCategory.map((c) => ({
+        category: c._id,
+        total: c.total,
+        count: c.count,
+      })),
+      byMonth: byMonth.map((m) => ({
+        month: m._id,
+        total: m.total,
+        count: m.count,
+      })),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -77,7 +145,7 @@ router.put("/:id", async (req, res) => {
     res.json(expense);
   } catch (err) {
     console.error(err);
-        if (err.name === "ValidationError") {
+    if (err.name === "ValidationError") {
       return res.status(400).json({ message: err.message });
     }
     res.status(500).json({ message: "Server error" });
