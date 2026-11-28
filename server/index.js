@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dns from "node:dns";
 import authRoutes from "./routes/auth.js";
+import expenseRoutes from "./routes/expenses.js";
 import "dotenv/config";
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 
 app.use(cors());
