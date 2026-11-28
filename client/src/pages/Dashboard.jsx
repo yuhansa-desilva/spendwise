@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiRequest } from "../api.js";
+import Charts from "../components/Charts.jsx";
 
 const CATEGORIES = [
   "Food",
@@ -156,6 +157,8 @@ function Dashboard() {
       </div>
 
       {error && <div className="error">{error}</div>}
+
+      <Charts refreshKey={expenses} />
 
       <h2>{editingId ? "Edit expense" : "Add expense"}</h2>
       <form className="expense-form" onSubmit={handleSubmit}>

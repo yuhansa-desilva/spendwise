@@ -166,3 +166,47 @@ select {
   background: #fee2e2;
   color: #b91c1c;
 }
+
+.charts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.charts-header h2 {
+  margin: 0;
+}
+
+.charts-header input {
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.chart-box {
+  min-width: 0;
+}
+
+.chart-box h3 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.muted {
+  color: #616e7c;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
